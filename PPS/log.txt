@@ -1,0 +1,6 @@
+Searching for files in : G:\GitLab\PythonPackageSniffer\SampleFiles
+---------------Found : 1 python files | 1 ipynb files---------------
+Reading : G:\GitLab\PythonPackageSniffer\SampleFiles\app.py
+Reading : G:\GitLab\PythonPackageSniffer\SampleFiles\Custom-Colour-Splash-Effect-Improved.ipynb
+Writing : G:\GitLab\PythonPackageSniffer\.$TempPPSSampleFiles\Custom-Colour-Splash-Effect-Improved.py
+Writing : G:\GitLab\PythonPackageSniffer\.$TempPPSSampleFiles\ALL_FILES_CODE_DUMP.py

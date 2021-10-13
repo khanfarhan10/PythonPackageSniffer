@@ -1,6 +1,9 @@
 """
 cd PPS
 python regex_matcher.py
+
+For debuggers :
+python regex_matcher.py > log.txt
 """
 
 import os, fnmatch
@@ -44,25 +47,59 @@ def read_notebook(file, store_markdown= False):
     
     return py_file
 
+def read_python(file):
+    """Reads a python file and returns the code"""
+    py_file = open(file, "r")
+    code = py_file.read()
+    py_file.close()
+    return code
+
+def extract_files(FIND_FOLDER, debug=False, v = False):
+    if v:
+        print("Searching for files in :", FIND_FOLDER)
+    py_files=find('*.py', FIND_FOLDER)
+    ipynb_files = find('*.ipynb', FIND_FOLDER)
+    if v:
+        print("-"*15 + f'Found : {len(py_files)} python files | {len(ipynb_files)} ipynb files' + "-"*15)
+
+    FOLDER_NAME = FIND_FOLDER.split(os.path.sep)[-1]
+    UP_FOLDER = os.path.dirname(FIND_FOLDER)
+    if debug:
+        TempPPS = os.path.join(UP_FOLDER, ".$" + "TempPPS" + FOLDER_NAME)
+        os.makedirs(TempPPS, exist_ok=True)
+    # print(py_files)
+    ALL_LINES = ""
+    for file in py_files:
+        if v:
+            print(f"Reading : {file}")
+        py_file = read_python(file)
+        ALL_LINES+= py_file
+    for file in ipynb_files:
+        if v:
+            print(f"Reading : {file}")
+        py_file = read_notebook(file)
+        ALL_LINES+= py_file            
+        if debug:
+            py_file_name = getBaseNameNoExt(file)
+            py_file_path = os.path.join(TempPPS,f"{py_file_name}.py") # f"{FIND_FOLDER}/{py_file_name}.py"
+            if v:
+                print(f"Writing : {py_file_path}")
+            with open(py_file_path, "w+") as f:
+                f.write(py_file)
+    if debug:
+        all_file_path = os.path.join(TempPPS,f"ALL_FILES_CODE_DUMP.py") # f"{FIND_FOLDER}/{py_file_name}.py"
+        if v:
+            print(f"Writing : {all_file_path}")
+        with open(all_file_path, "w+") as f:
+            f.write(ALL_LINES)
+    return ALL_LINES
+
 if __name__ == '__main__':
     CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__)) # os.getcwd()
     UP_FOLDER = os.path.dirname(CURRENT_FOLDER)
     FIND_FOLDER = os.path.join(UP_FOLDER, "SampleFiles")
-    print(FIND_FOLDER)
-    py_files=find('*.py', FIND_FOLDER)
-    ipynb_files = find('*.ipynb', FIND_FOLDER)
+    all_code = extract_files(FIND_FOLDER, v=1, debug=1)
     
-    print(f'Found {len(py_files)} python files')
-    print(py_files)
-    print(f'Found {len(ipynb_files)} ipynb files')
-
-    for file in ipynb_files:
-        py_file = read_notebook(file)
-        py_file_name = getBaseNameNoExt(file)
-        py_file_path = f"{py_file_name}.py" # f"{FIND_FOLDER}/{py_file_name}.py"
-        print(f"Writing {py_file_path}")
-        with open(py_file_path, "w+") as f:
-            f.write(py_file)
 
 
 
