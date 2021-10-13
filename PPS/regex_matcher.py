@@ -1,4 +1,5 @@
 """
+cd PPS
 python regex_matcher.py
 """
 
@@ -44,10 +45,15 @@ def read_notebook(file, store_markdown= False):
     return py_file
 
 if __name__ == '__main__':
-    FIND_FOLDER=os.getcwd()
+    CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__)) # os.getcwd()
+    UP_FOLDER = os.path.dirname(CURRENT_FOLDER)
+    FIND_FOLDER = os.path.join(UP_FOLDER, "SampleFiles")
+    print(FIND_FOLDER)
     py_files=find('*.py', FIND_FOLDER)
     ipynb_files = find('*.ipynb', FIND_FOLDER)
+    
     print(f'Found {len(py_files)} python files')
+    print(py_files)
     print(f'Found {len(ipynb_files)} ipynb files')
 
     for file in ipynb_files:
