@@ -94,6 +94,8 @@ def extract_files(FIND_FOLDER, debug=False, v = False):
             f.write(ALL_LINES)
     return ALL_LINES
 
+
+
 if __name__ == '__main__':
     CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__)) # os.getcwd()
     UP_FOLDER = os.path.dirname(CURRENT_FOLDER)
